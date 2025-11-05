@@ -1,0 +1,41 @@
+{
+  "name": "playwright-automation-project",
+  "version": "1.0.0",
+  "description": "Playwright automation testing project with TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:codegen": "playwright codegen",
+    "clean:reports": "rimraf allure-report allure-results && mkdirp allure-report allure-results",
+    "generate:reports": "npx allure generate ./allure-results --clean",
+    "open:reports": "npx allure open allure-report",
+    "pretest": "npm run clean:reports",
+    "posttest": "npm run generate:reports && npm run open:reports",
+    "scripts:to:run": "npx playwright test",
+    "test:allure": "npm run scripts:to:run || npm run posttest"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "typescript",
+    "e2e"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^22.10.2",
+    "allure-commandline": "^2.34.1",
+    "allure-playwright": "^3.4.2",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^6.1.0",
+    "typescript": "^5.7.2"
+  }
+}
