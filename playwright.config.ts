@@ -36,14 +36,38 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // Setup project - runs first to handle authentication
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
     },
 
+    // Chromium
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        // Use auth state for authenticated tests
+        storageState: "./auth/user.json",
+      },
+      testMatch: "tests/**/*.spec.ts",
+      dependencies: ["setup"],
+    },
+
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] }
+    // },
+
+    // Webkit
     {
       name: "webkit",
-      use: { ...devices["Desktop Safari"] },
+      use: {
+        ...devices["Desktop Safari"],
+        storageState: "./auth/user.json",
+      },
+      testMatch: "tests/**/*.spec.ts",
+      dependencies: ["setup"],
     },
 
     /* Test against mobile viewports. */
@@ -69,8 +93,8 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  //   command: "npm run start",
+  //   url: baseURL,
+  //   reuseExistingServer: !process.env.CI
+  // }
 });
