@@ -1,17 +1,12 @@
-import { expect, test } from "@playwright/test";
-
-import { SaucedemoLoginPage } from "../../pages/login-page";
+import { expect, test } from "../fixtures";
 import { SaucedemoCredentials, SaucedemoMessages, SaucedemoUrls } from "../../shared/constants";
 
 test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
-  let loginPage: SaucedemoLoginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new SaucedemoLoginPage(page);
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.navigateToLoginPage();
   });
 
-  test("Should show error message for locked out user", async ({ page }) => {
+  test("Should show error message for locked out user", async ({ page, loginPage }) => {
     await test.step("Attempt login with locked out user", async () => {
       await loginPage.login(
         SaucedemoCredentials.LOCKED_OUT_USER.username,
@@ -29,7 +24,7 @@ test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
     });
   });
 
-  test("Should show error message for invalid username", async () => {
+  test("Should show error message for invalid username", async ({ loginPage }) => {
     await test.step("Login with invalid username", async () => {
       await loginPage.login("invalid_user", "secret_sauce");
     });
@@ -40,7 +35,7 @@ test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
     });
   });
 
-  test("Should show error message for invalid password", async () => {
+  test("Should show error message for invalid password", async ({ loginPage }) => {
     await test.step("Login with invalid password", async () => {
       await loginPage.login(SaucedemoCredentials.STANDARD_USER.username, "wrong_password");
     });
@@ -51,7 +46,7 @@ test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
     });
   });
 
-  test("Should show error when username is empty", async () => {
+  test("Should show error when username is empty", async ({ loginPage }) => {
     await test.step("Attempt login with empty username", async () => {
       await loginPage.fillUsername("");
       await loginPage.fillPassword(SaucedemoCredentials.STANDARD_USER.password);
@@ -64,7 +59,7 @@ test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
     });
   });
 
-  test("Should show error when password is empty", async () => {
+  test("Should show error when password is empty", async ({ loginPage }) => {
     await test.step("Attempt login with empty password", async () => {
       await loginPage.fillUsername(SaucedemoCredentials.STANDARD_USER.username);
       await loginPage.fillPassword("");
@@ -77,7 +72,7 @@ test.describe("Saucedemo Login Page - Failed Login Scenarios", () => {
     });
   });
 
-  test("Should show error when both fields are empty", async () => {
+  test("Should show error when both fields are empty", async ({ loginPage }) => {
     await test.step("Click login without filling any fields", async () => {
       await loginPage.clickLoginButton();
     });

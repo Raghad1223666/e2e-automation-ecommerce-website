@@ -1,17 +1,12 @@
-import { expect, test } from "@playwright/test";
-
-import { SaucedemoLoginPage } from "../../pages/login-page";
+import { expect, test } from "../fixtures";
 import { SaucedemoCredentials, SaucedemoUrls } from "../../shared/constants";
 
 test.describe("Saucedemo Login Page - Form Field Interactions", () => {
-  let loginPage: SaucedemoLoginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new SaucedemoLoginPage(page);
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.navigateToLoginPage();
   });
 
-  test("Should fill and retain username value", async () => {
+  test("Should fill and retain username value", async ({ loginPage }) => {
     await test.step("Fill username field", async () => {
       await loginPage.fillUsername(SaucedemoCredentials.STANDARD_USER.username);
     });
@@ -21,7 +16,7 @@ test.describe("Saucedemo Login Page - Form Field Interactions", () => {
     });
   });
 
-  test("Should fill and retain password value", async () => {
+  test("Should fill and retain password value", async ({ loginPage }) => {
     await test.step("Fill password field", async () => {
       await loginPage.fillPassword(SaucedemoCredentials.STANDARD_USER.password);
     });
@@ -31,7 +26,7 @@ test.describe("Saucedemo Login Page - Form Field Interactions", () => {
     });
   });
 
-  test("Should clear username field", async () => {
+  test("Should clear username field", async ({ loginPage }) => {
     await test.step("Fill and then clear username", async () => {
       await loginPage.fillUsername(SaucedemoCredentials.STANDARD_USER.username);
       await loginPage.clearUsername();
@@ -42,7 +37,7 @@ test.describe("Saucedemo Login Page - Form Field Interactions", () => {
     });
   });
 
-  test("Should clear password field", async () => {
+  test("Should clear password field", async ({ loginPage }) => {
     await test.step("Fill and then clear password", async () => {
       await loginPage.fillPassword(SaucedemoCredentials.STANDARD_USER.password);
       await loginPage.clearPassword();
@@ -53,7 +48,7 @@ test.describe("Saucedemo Login Page - Form Field Interactions", () => {
     });
   });
 
-  test("Should allow multiple login attempts", async ({ page }) => {
+  test("Should allow multiple login attempts", async ({ page, loginPage }) => {
     await test.step("First failed login attempt", async () => {
       await loginPage.login("invalid_user", "wrong_password");
     });
@@ -70,7 +65,7 @@ test.describe("Saucedemo Login Page - Form Field Interactions", () => {
     });
   });
 
-  test("Should close error message when X button is clicked", async () => {
+  test("Should close error message when X button is clicked", async ({ loginPage }) => {
     await test.step("Trigger error message", async () => {
       await loginPage.clickLoginButton();
       await expect(loginPage.errorMessage).toBeVisible();
