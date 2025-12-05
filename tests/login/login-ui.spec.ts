@@ -1,17 +1,12 @@
-import { expect, test } from "@playwright/test";
-
-import { SaucedemoLoginPage } from "../../pages/login-page";
+import { expect, test } from "../fixtures";
 import { SaucedemoUrls } from "../../shared/constants";
 
 test.describe("Saucedemo Login Page - UI Elements", () => {
-  let loginPage: SaucedemoLoginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new SaucedemoLoginPage(page);
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.navigateToLoginPage();
   });
 
-  test("Should display all login page elements correctly", async () => {
+  test("Should display all login page elements correctly", async ({ loginPage }) => {
     await test.step("Verify app logo is visible", async () => {
       await expect(loginPage.appLogo).toBeVisible();
     });

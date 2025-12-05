@@ -1,17 +1,12 @@
-import { expect, test } from "@playwright/test";
-
-import { SaucedemoLoginPage } from "../../pages/login-page";
+import { expect, test } from "../fixtures";
 import { SaucedemoCredentials, SaucedemoUrls } from "../../shared/constants";
 
 test.describe("Saucedemo Login Page - Security and Edge Cases", () => {
-  let loginPage: SaucedemoLoginPage;
-
-  test.beforeEach(async ({ page }) => {
-    loginPage = new SaucedemoLoginPage(page);
+  test.beforeEach(async ({ loginPage }) => {
     await loginPage.navigateToLoginPage();
   });
 
-  test("Should mask password input", async () => {
+  test("Should mask password input", async ({ loginPage }) => {
     await test.step("Fill password field", async () => {
       await loginPage.fillPassword(SaucedemoCredentials.STANDARD_USER.password);
     });
@@ -21,7 +16,7 @@ test.describe("Saucedemo Login Page - Security and Edge Cases", () => {
     });
   });
 
-  test("Should handle special characters in username", async () => {
+  test("Should handle special characters in username", async ({ loginPage }) => {
     const usernameWithSpecialChars = "user#%@";
 
     await test.step("Fill username with special characters", async () => {
@@ -33,7 +28,7 @@ test.describe("Saucedemo Login Page - Security and Edge Cases", () => {
     });
   });
 
-  test("Should handle SQL injection attempt in username", async ({ page }) => {
+  test("Should handle SQL injection attempt in username", async ({ page, loginPage }) => {
     await test.step("Attempt SQL injection in username", async () => {
       await loginPage.login("admin OR '1'='1'", "secret_sauce");
     });
@@ -44,7 +39,7 @@ test.describe("Saucedemo Login Page - Security and Edge Cases", () => {
     });
   });
 
-  test("Should handle very long username input", async () => {
+  test("Should handle very long username input", async ({ loginPage }) => {
     const longUsername = "a".repeat(500);
 
     await test.step("Fill with very long username", async () => {
@@ -56,7 +51,7 @@ test.describe("Saucedemo Login Page - Security and Edge Cases", () => {
     });
   });
 
-  test("Should handle whitespace in credentials", async () => {
+  test("Should handle whitespace in credentials", async ({ loginPage }) => {
     const usernameWithSpaces = " standard_user ";
     const passwordWithSpaces = " secret_sauce ";
 
